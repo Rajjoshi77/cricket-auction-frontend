@@ -1,0 +1,36 @@
+name: Deploy Backend
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+
+jobs:
+  deploy:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+        
+    - name: Install Dependencies
+      run: |
+        cd backend
+        npm install
+        
+    - name: Run Tests
+      run: |
+        cd backend
+        npm test
+      
+    - name: Deploy to Production
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      run: |
+        npm install -g @railway/cli
+        railway up
