@@ -1,18 +1,18 @@
 {
   "files": {
     "main.css": "/cricket-auction-frontend/static/css/main.6b15f382.css",
-    "main.js": "/cricket-auction-frontend/static/js/main.81a542e4.js",
+    "main.js": "/cricket-auction-frontend/static/js/main.973081a3.js",
     "static/js/885.f03e87c9.chunk.js": "/cricket-auction-frontend/static/js/885.f03e87c9.chunk.js",
     "static/js/453.4c58e6c8.chunk.js": "/cricket-auction-frontend/static/js/453.4c58e6c8.chunk.js",
     "static/media/bgImage.jpg": "/cricket-auction-frontend/static/media/bgImage.a872f9ddcada32580361.jpg",
     "index.html": "/cricket-auction-frontend/index.html",
     "main.6b15f382.css.map": "/cricket-auction-frontend/static/css/main.6b15f382.css.map",
-    "main.81a542e4.js.map": "/cricket-auction-frontend/static/js/main.81a542e4.js.map",
+    "main.973081a3.js.map": "/cricket-auction-frontend/static/js/main.973081a3.js.map",
     "885.f03e87c9.chunk.js.map": "/cricket-auction-frontend/static/js/885.f03e87c9.chunk.js.map",
     "453.4c58e6c8.chunk.js.map": "/cricket-auction-frontend/static/js/453.4c58e6c8.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.6b15f382.css",
-    "static/js/main.81a542e4.js"
+    "static/js/main.973081a3.js"
   ]
 }
