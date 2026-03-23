@@ -9,6 +9,7 @@ const tournamentRoutes = require('./routes/tournaments.routes');
 const auctionRoutes = require('./routes/auctions.routes');
 const playerRoutes = require('./routes/players.routes');
 const authRoutes = require('./routes/auth.routes');
+const teamRoutes = require('./routes/teams.routes');
 const http = require('http');
 const { initializeSocket } = require('./socket/auctionSocket');
 
@@ -51,6 +52,7 @@ app.use('/api/tournaments', tournamentRoutes);
 app.use('/api/auctions', auctionRoutes);
 app.use('/api/players', playerRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/teams', teamRoutes);
 
 // Authentication middleware
 const authenticateToken = (req, res, next) => {

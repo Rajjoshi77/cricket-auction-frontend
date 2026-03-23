@@ -40,6 +40,12 @@ exports.createPlayer = async (req, res) => {
             profile_image_url
         } = req.body;
 
+        // Check if a file was uploaded
+        let finalImageUrl = profile_image_url;
+        if (req.file) {
+            finalImageUrl = `uploads/${req.file.filename}`;
+        }
+
         const [result] = await pool.query(
             `INSERT INTO players (
                 first_name, 
@@ -60,7 +66,7 @@ exports.createPlayer = async (req, res) => {
                 role,
                 specialization,
                 base_price,
-                profile_image_url
+                finalImageUrl
             ]
         );
 
@@ -93,6 +99,12 @@ exports.updatePlayer = async (req, res) => {
             return res.status(404).json({ message: 'Player not found' });
         }
 
+        // Check if a file was uploaded
+        let finalImageUrl = profile_image_url;
+        if (req.file) {
+            finalImageUrl = `uploads/${req.file.filename}`;
+        }
+
         await pool.query(
             `UPDATE players SET 
             first_name = ?, 
@@ -113,7 +125,7 @@ exports.updatePlayer = async (req, res) => {
                 role,
                 specialization,
                 base_price,
-                profile_image_url,
+                finalImageUrl,
                 id
             ]
         );

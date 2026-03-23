@@ -41,4 +41,17 @@ exports.isAdmin = (req, res, next) => {
 
     console.log('Admin access granted');
     next();
-}; 
+};
+
+// Middleware to check if user is team owner
+exports.isTeamOwner = (req, res, next) => {
+    console.log('Checking team owner rights for user:', req.user);
+
+    if (req.user.role !== 'team_owner' && req.user.role !== 'admin') {
+        console.log('Access denied: User is not a team owner');
+        return res.status(403).json({ message: 'Access denied: Team owner rights required' });
+    }
+
+    console.log('Team owner access granted');
+    next();
+};

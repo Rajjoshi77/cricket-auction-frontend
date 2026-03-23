@@ -3,7 +3,7 @@ const pool = require('../config/database');
 const jwt = require('jsonwebtoken');
 
 // Get all teams
-exports.getAllTeams = async (req, res) => {
+const getAllTeams = async (req, res) => {
     try {
         const [teams] = await db.query(
             `SELECT t.*, o.name as owner_name 
@@ -17,8 +17,7 @@ exports.getAllTeams = async (req, res) => {
     }
 };
 
-// Get team by ID
-exports.getTeamById = async (req, res) => {
+const getTeamById = async (req, res) => {
     try {
         const [teams] = await db.query(
             `SELECT t.*, o.name as owner_name 
@@ -39,10 +38,14 @@ exports.getTeamById = async (req, res) => {
     }
 };
 
-// Create a new team
-exports.createTeam = async (req, res) => {
+const createTeam = async (req, res) => {
     try {
         const { name, city, state, home_ground, logo_url } = req.body;
+        
+        let finalLogoUrl = logo_url;
+        if (req.file) {
+            finalLogoUrl = `uploads/${req.file.filename}`;
+        }
         const owner_id = req.user.id; // From auth middleware
 
         // Check if owner already has a team
@@ -57,7 +60,7 @@ exports.createTeam = async (req, res) => {
 
         const [result] = await pool.query(
             'INSERT INTO teams (name, owner_id, city, state, home_ground, logo_url) VALUES (?, ?, ?, ?, ?, ?)',
-            [name, owner_id, city, state, home_ground, logo_url]
+            [name, owner_id, city, state, home_ground, finalLogoUrl]
         );
 
         res.status(201).json({
@@ -70,11 +73,15 @@ exports.createTeam = async (req, res) => {
     }
 };
 
-// Update team
-exports.updateTeam = async (req, res) => {
+const updateTeam = async (req, res) => {
     try {
         const { team_name, home_ground, team_logo_url, established_year } = req.body;
         const team_id = req.params.id;
+
+        let finalLogoUrl = team_logo_url;
+        if (req.file) {
+            finalLogoUrl = `uploads/${req.file.filename}`;
+        }
 
         // Check if user is team owner or admin
         const [teams] = await db.query(
@@ -92,7 +99,7 @@ exports.updateTeam = async (req, res) => {
 
         await db.query(
             'UPDATE teams SET team_name = ?, home_ground = ?, team_logo_url = ?, established_year = ? WHERE team_id = ?',
-            [team_name, home_ground, team_logo_url, established_year, team_id]
+            [team_name, home_ground, finalLogoUrl, established_year, team_id]
         );
 
         res.json({ message: 'Team updated successfully' });
@@ -102,8 +109,7 @@ exports.updateTeam = async (req, res) => {
     }
 };
 
-// Delete team
-exports.deleteTeam = async (req, res) => {
+const deleteTeam = async (req, res) => {
     try {
         const team_id = req.params.id;
 
@@ -128,8 +134,7 @@ exports.deleteTeam = async (req, res) => {
     }
 };
 
-// Get team details for the logged-in owner
-exports.getMyTeam = async (req, res) => {
+const getMyTeam = async (req, res) => {
     try {
         const owner_id = req.user.id;
 
@@ -161,8 +166,7 @@ exports.getMyTeam = async (req, res) => {
     }
 };
 
-// Register team for an auction
-exports.registerForAuction = async (req, res) => {
+const registerForAuction = async (req, res) => {
     try {
         const { auction_id, purse_amount } = req.body;
         const owner_id = req.user.id;
@@ -204,8 +208,7 @@ exports.registerForAuction = async (req, res) => {
     }
 };
 
-// Get all players (for team owner view)
-exports.getAllPlayers = async (req, res) => {
+const getAllPlayers = async (req, res) => {
     try {
         const [players] = await pool.query('SELECT * FROM players');
         res.json(players);
@@ -215,8 +218,7 @@ exports.getAllPlayers = async (req, res) => {
     }
 };
 
-// Get detailed player information
-exports.getPlayerDetails = async (req, res) => {
+const getPlayerDetails = async (req, res) => {
     try {
         const { player_id } = req.params;
         const [player] = await pool.query(
@@ -254,4 +256,4 @@ module.exports = {
     registerForAuction,
     getAllPlayers,
     getPlayerDetails
-}; 
+};
